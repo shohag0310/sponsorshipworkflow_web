@@ -61,6 +61,36 @@ npm run dev
 - FinanceAdmin: `pending-review`
 - SystemAdmin: `all-requests`, `workflow-history`, `sponsorship-types`
 
+## Architecture Explanation (Frontend Focus)
+
+### Backend Architecture (Context)
+- Frontend integrates with a layered backend (`API`, `Application`, `Domain`, `Infrastructure`) via REST endpoints.
+- UI relies on backend-enforced business rules and role authorization for workflow safety.
+
+### Frontend Structure
+- Feature-first module organization keeps request/approval/admin concerns separated.
+- Shared components and centralized API client reduce duplication and improve maintainability.
+
+### Workflow Logic (UI View)
+- Requestor creates/submits and manages own requests.
+- Manager and Finance views are role-filtered to their approval stages.
+- Request details pages surface status progression and action history.
+
+### RBAC Logic
+- JWT token is stored client-side and decoded for role-aware rendering.
+- `ProtectedRoute` and `RoleRoute` control access to page-level routes.
+- Navigation menu and quick actions are role-dependent.
+
+### Database Design (Context)
+- Frontend consumes normalized backend DTOs derived from core entities:
+  - users, sponsorship requests, sponsorship types, approval histories.
+- UI mapping converts backend status codes into presentation-friendly labels.
+
+### Assumptions and Tradeoffs
+- Frontend assumes backend is the source of truth for authorization and workflow transitions.
+- Optimized for clarity and speed of delivery over advanced offline state sync or complex caching.
+- Scope intentionally avoids heavy state frameworks to keep assessment implementation focused.
+
 ## Live URL
 - https://sponsorshipworkflow-web.vercel.app
 
