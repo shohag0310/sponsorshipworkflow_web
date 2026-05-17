@@ -33,6 +33,64 @@ This is a workflow-based sponsorship approval system with role-based access and 
 - `FinanceAdmin`
 - `SystemAdmin`
 
+## 4) Architecture Explanation
+
+### Backend Architecture
+- Layered structure with clear separation:
+  - `API`: controllers and HTTP concerns (auth, routing, swagger, CORS)
+  - `Application`: DTOs and interfaces (use-case contracts)
+  - `Domain`: core business entities and enums
+  - `Infrastructure`: EF Core persistence, service implementations, workflow state transitions, seeders
+- Controllers stay thin and delegate business rules to services.
+
+### Frontend Structure
+- Feature-based React organization:
+  - `features/auth`, `features/requests`, `features/approvals`, `features/admin`
+  - shared UI/layout in `components`
+  - routing in `app/router.tsx`
+  - API client/token handling in `api/client.ts`
+- Protected and role-based routes enforce access boundaries in UI.
+
+### Workflow Logic
+- Core lifecycle:
+  - `Draft -> PendingManagerApproval -> PendingFinanceReview -> Approved`
+- Alternate outcomes:
+  - manager rejection or finance rejection -> `Rejected`
+  - requestor cancellation from allowed states -> `Cancelled`
+- Each workflow action is recorded in approval history for traceability.
+
+### RBAC Logic
+- Roles: `Requestor`, `Manager`, `FinanceAdmin`, `SystemAdmin`
+- Backend authorization via JWT role claims + `[Authorize(Roles = ...)]`
+- Frontend role gating via protected routes and role-aware navigation/actions
+- Access intent:
+  - requestor handles own requests
+  - manager handles manager-stage approvals
+  - finance handles finance-stage approvals
+  - system admin has broad operational visibility/control
+
+### Database Design
+- Main tables/entities:
+  - `Users`
+  - `SponsorshipRequests`
+  - `SponsorshipTypes`
+  - `ApprovalHistories`
+- Key relations:
+  - one user to many requests (as requestor)
+  - one request to many approval history records
+  - one sponsorship type to many requests
+- Status enum on requests + immutable history table supports both current state and audit timeline queries.
+
+### Assumptions and Tradeoffs
+- Assumptions:
+  - single sequential approval chain (manager then finance)
+  - seeded accounts for evaluator convenience
+  - enum-driven workflow sufficient for assessment scope
+- Tradeoffs:
+  - simplified operational hardening (observability, background jobs, multi-tenant controls)
+  - no document upload pipeline in current scope
+  - focus prioritized on architecture clarity and workflow correctness over full production depth
+
 ## Assessment Notes
 This implementation is scoped for technical assessment, focused on:
 - architecture and code organization
