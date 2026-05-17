@@ -1,6 +1,13 @@
 import { api, getData } from "../../../api/client";
 import type { Request, CreateRequestPayload } from "../types/request";
 
+export interface DashboardStats {
+  totalRequests: number;
+  pending: number;
+  approved: number;
+  rejected: number;
+}
+
 // Map backend response to frontend type
 function mapRequest(req: any): Request {
   // Convert numeric status to string
@@ -67,5 +74,10 @@ export const requestApi = {
   getAllHistory: async (): Promise<any[]> => {
     const res = await api.get("/requests/all-history");
     return getData(res) as any[];
+  },
+
+  getDashboardStats: async (): Promise<DashboardStats> => {
+    const res = await api.get("/requests/dashboard-stats");
+    return getData(res) as DashboardStats;
   },
 };

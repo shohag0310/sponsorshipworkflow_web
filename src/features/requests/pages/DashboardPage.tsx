@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { requestApi } from "../api/requestApi";
 import { useAuth } from "../../../auth/AuthContext";
 import Loading from "../../../components/ui/Loading";
-import type { Request } from "../types/request";
 import { toast } from "react-hot-toast/headless";
 
 interface DashboardStats {
@@ -78,23 +77,8 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       setError(null);
-      const data = await requestApi.getAll();
-
-      if (!data || !Array.isArray(data)) {
-        setStats({ totalRequests: 0, pending: 0, approved: 0, rejected: 0 });
-        return;
-      }
-
-      const stats: DashboardStats = {
-        totalRequests: data.length,
-        pending: data.filter((r: Request) =>
-          r.status === "PendingManagerApproval" || r.status === "PendingFinanceReview"
-        ).length,
-        approved: data.filter((r: Request) => r.status === "Approved").length,
-        rejected: data.filter((r: Request) => r.status === "Rejected").length,
-      };
-
-      setStats(stats);
+      const data = await requestApi.getDashboardStats();
+      setStats(data);
     } catch {
       setError("Failed to load dashboard stats");
       toast.error("Failed to load dashboard stats");
