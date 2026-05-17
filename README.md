@@ -1,64 +1,41 @@
-# Sponsorship Workflow Frontend
+# Sponsorship Workflow System
 
-React + TypeScript + Vite frontend for the **Sponsorship Request Approval Workflow** assessment.
+This is a workflow-based sponsorship approval system with role-based access and multi-stage approval.
 
-## Tech Stack
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-- Axios
+## Live Test Links
+- Frontend: https://sponsorshipworkflow-web.vercel.app
+- Backend API: https://sponsorshipworkflow-api.onrender.com/api
+- Swagger: https://sponsorshipworkflow-api.onrender.com/swagger/index.html
 
-## Features Implemented
-- Role-based login UI
-- Dashboard per role
-- Request list and details
-- Create / edit sponsorship request (draft + submit flow)
-- Manager and Finance approval/rejection actions
-- Workflow history view
-- Sponsorship type management (System Admin)
-- Confirm dialogs with remarks input for approval/rejection
+## Repositories
+- API: https://github.com/shohag0310/sponsorshipworkflow_api.git
+- Web: https://github.com/shohag0310/sponsorshipworkflow_web.git
 
-## Prerequisites
-- Node.js 20+
-- npm 10+
-- Running backend API
-
-## Environment Variables
-Create `.env`:
-
-```env
-VITE_API_URL=https://localhost:7206/api
-```
-
-## Run Frontend
-```bash
-npm install
-npm run dev
-```
-
-Default local URL:
-- `http://localhost:5173`
-
-## Build
-```bash
-npm run build
-```
+## Readme Structure (3 files)
+1. Master (this file): project summary, links, assessment view
+2. Web README: [README.web.md](C:\Users\Shohag\source\repos\SponsorshipWorkflowFrontEnd\sponsorshipworkflow\README.web.md)
+3. API README: [README.api.md](C:\Users\Shohag\source\repos\SponsorshipWorkflowFrontEnd\sponsorshipworkflow\README.api.md)
 
 ## Test Accounts
-Use seeded backend users:
 - `requestor@test.com` / `Password123!`
 - `manager@test.com` / `Password123!`
 - `finance@test.com` / `Password123!`
 - `admin@test.com` / `Password123!`
 
-## Role Mapping
-- Requestor: create, draft, submit, view own, cancel
-- Manager: approve/reject pending manager requests
-- Finance Admin: approve/reject pending finance requests
-- System Admin: all requests, workflow history, sponsorship type settings
+## Workflow Summary
+- `Draft -> PendingManagerApproval -> PendingFinanceReview -> Approved`
+- Rejection at manager/finance: `Rejected`
+- Requestor can cancel from allowed states: `Cancelled`
 
-## Notes / Tradeoffs
-- Supporting document upload is not implemented yet (optional in assessment).
-- Current deployment/live URLs should be added in the main project README after hosting.
+## Roles
+- `Requestor`
+- `Manager`
+- `FinanceAdmin`
+- `SystemAdmin`
+
+## Assessment Notes
+This implementation is scoped for technical assessment, focused on:
+- architecture and code organization
+- workflow/RBAC implementation
+- practical tradeoffs
+- communication clarity
