@@ -10,7 +10,6 @@ export type Request = {
   eventDate: string;
   requestedAmount: number;
   purpose: string;
-  expectedBenefit?: string;
   expectedBusinessBenefit?: string;
   remarks?: string;
   status: RequestStatusType;
@@ -26,6 +25,7 @@ export type CreateRequestPayload = {
   eventDate: string;
   requestedAmount: number;
   purpose: string;
-  expectedBenefit?: string;
+  expectedBusinessBenefit?: string;
+  remarks?: string;
   status?: RequestStatusType;
 };

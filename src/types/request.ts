@@ -15,7 +15,7 @@ export type Request = {
   eventDate: string;
   amount: number;
   purpose: string;
-  expectedBenefit: string;
+  expectedBusinessBenefit?: string;
   remarks?: string;
   status: RequestStatus;
   createdAt: string;

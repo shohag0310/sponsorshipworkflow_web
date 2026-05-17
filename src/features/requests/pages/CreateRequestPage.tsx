@@ -18,7 +18,8 @@ const schema = z.object({
   sponsorshipTypeId: z.string().min(1, "Sponsorship type is required"),
   requestedAmount: z.number().min(1, "Amount must be greater than 0"),
   purpose: z.string().min(10, "Purpose must be at least 10 characters"),
-  expectedBenefit: z.string().optional(),
+  expectedBusinessBenefit: z.string().optional(),
+  remarks: z.string().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -107,7 +108,8 @@ export default function CreateRequestPage() {
             sponsorshipTypeId: typeMatch?.id || "",
             requestedAmount: data.requestedAmount || 0,
             purpose: data.purpose || "",
-            expectedBenefit: data.expectedBusinessBenefit || "",
+            expectedBusinessBenefit: data.expectedBusinessBenefit || "",
+            remarks: data.remarks || "",
           });
         }
       } catch {
@@ -241,12 +243,20 @@ export default function CreateRequestPage() {
                 placeholder="Describe the sponsorship objective, audience, and outcome expectations."
               />
             </Field>
-            <Field label="Expected Business Benefit" error={errors.expectedBenefit?.message}>
+            <Field label="Expected Business Benefit" error={errors.expectedBusinessBenefit?.message}>
               <textarea
-                {...register("expectedBenefit")}
+                {...register("expectedBusinessBenefit")}
                 rows={4}
                 className={inputClass}
                 placeholder="Expected ROI, brand exposure, leads, or strategic benefits."
+              />
+            </Field>
+            <Field label="Remarks" error={errors.remarks?.message}>
+              <textarea
+                {...register("remarks")}
+                rows={3}
+                className={inputClass}
+                placeholder="Optional internal notes or context."
               />
             </Field>
           </div>
